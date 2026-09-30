@@ -1,8 +1,11 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
 class MinecraftProfile(models.Model):
+    history = HistoricalRecords()
+
     class MinecraftProfileType(models.TextChoices):
         JAVA = 'java', 'Java'
         BEDROCK = 'bedrock', 'Bedrock'
@@ -26,6 +29,7 @@ class MinecraftProfile(models.Model):
         return self.username
 
 class ProfileOwner(models.Model):
+    history = HistoricalRecords()
     profile = models.ForeignKey(MinecraftProfile, on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
