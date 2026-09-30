@@ -1,10 +1,12 @@
 from django.db import models
+from django.conf import settings
 from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
 class MinecraftProfile(models.Model):
     history = HistoricalRecords()
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='minecraft_profiles', null=True, blank=True)
 
     class MinecraftProfileType(models.TextChoices):
         JAVA = 'java', 'Java'
@@ -27,15 +29,3 @@ class MinecraftProfile(models.Model):
 
     def __str__(self):
         return self.username
-
-class ProfileOwner(models.Model):
-    history = HistoricalRecords()
-    profile = models.ForeignKey(MinecraftProfile, on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-
-    # Only one owner per profile, but a user can own multiple profiles (e.g. Java and Bedrock)
-    class Meta:
-        unique_together = ('profile', 'user')
-
-    def __str__(self):
-        return f"{self.user.username} owns {self.profile.username}"
