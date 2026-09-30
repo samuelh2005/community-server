@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from minecraft_profile.views import index
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('profile/', index, name='minecraft_profile_index')
 ]
